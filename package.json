@@ -1,0 +1,25 @@
+{
+  "name": "timestamp-microservices",
+  "version": "1.0.0",
+  "description": "For freecodecamp certification",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RizkyArifNur/freecodecamp-timestamp-microservices.git"
+  },
+  "author": "Rizky Arif Nur Choir",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RizkyArifNur/freecodecamp-timestamp-microservices/issues"
+  },
+  "homepage": "https://github.com/RizkyArifNur/freecodecamp-timestamp-microservices#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "engines": {
+    "node": "8.x"
+  }
+}
