@@ -5,26 +5,32 @@
 const express = require("express");
 const app = express();
 
-app.get("/api/:time", (req, res) => {
+app.get("/api/timestamp/:time", (req, res) => {
   const timeStr = req.params.time;
+  if (/\d{5,}/.test(timeStr)) {
+    const dateInt = parseInt(timeStr);
+    //Date regards numbers as unix timestamps, strings are processed differently
+    res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
+    return;
+  }
   const date = timeStr ? new Date(timeStr) : new Date();
   const isValidDate = date instanceof Date && !isNaN(date);
   console.log(date);
 
   if (isValidDate) {
-    res.send({ unix: date.getTime(), utc: date.toUTCString() });
+    res.json({ unix: date.valueOf(), utc: date.toUTCString() });
   } else {
-    res.send({ error: "Invalid Date" });
+    res.json({ error: "Invalid Date" });
   }
 });
 
-app.get("/api/", (req, res) => {
+app.get("/api/timestamp", (req, res) => {
   const date = new Date();
   const isValidDate = date instanceof Date && !isNaN(date);
   if (isValidDate) {
-    res.send({ unix: date.getTime(), utc: date.toUTCString() });
+    res.json({ unix: date.valueOf(), utc: date.toUTCString() });
   } else {
-    res.send({ error: "Invalid Date" });
+    res.json({ error: "Invalid Date" });
   }
 });
 
