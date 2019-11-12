@@ -4,34 +4,28 @@
 // init project
 const express = require("express");
 const app = express();
+const cors = require("cors");
+app.use(cors());
 
-app.get("/api/timestamp/:time", (req, res) => {
-  const timeStr = req.params.time;
-  if (/\d{5,}/.test(timeStr)) {
-    const dateInt = parseInt(timeStr);
-    //Date regards numbers as unix timestamps, strings are processed differently
-    res.json({ unix: dateInt, utc: new Date(dateInt).toUTCString() });
-    return;
-  }
-  const date = timeStr ? new Date(timeStr) : new Date();
-  const isValidDate = date instanceof Date && !isNaN(date);
-  console.log(date);
-
-  if (isValidDate) {
-    res.json({ unix: date.valueOf(), utc: date.toUTCString() });
+app.get("/api/timestamp/:time?", (req, res) => {
+  var date = null;
+  if (req.params.time !== undefined) {
+    var unixTimestamp = parseInt(req.params.time * 1);
+    if (isNaN(unixTimestamp)) {
+      date = new Date(req.params.time);
+    } else {
+      date = new Date(unixTimestamp);
+    }
   } else {
-    res.json({ error: "Invalid Date" });
+    date = new Date(Date.now());
   }
-});
 
-app.get("/api/timestamp", (req, res) => {
-  const date = new Date();
-  const isValidDate = date instanceof Date && !isNaN(date);
-  if (isValidDate) {
-    res.json({ unix: date.valueOf(), utc: date.toUTCString() });
-  } else {
-    res.json({ error: "Invalid Date" });
-  }
+  var response =
+    date == "Invalid Date"
+      ? { error: "Invalid Date" }
+      : { unix: date.getTime(), utc: date.toUTCString() };
+
+  res.json(response);
 });
 
 // listen for requests :)
