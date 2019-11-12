@@ -6,7 +6,17 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 app.use(cors());
-
+app.get("/api/whoami", (req, res) => {
+  var ipaddress =
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  var language = req.headers["accept-language"];
+  var software = req.headers["user-agent"];
+  res.json({
+    ipaddress,
+    language,
+    software
+  });
+});
 app.get("/api/timestamp/:time?", (req, res) => {
   var date = null;
   if (req.params.time !== undefined) {
